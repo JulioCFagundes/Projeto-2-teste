@@ -1,1 +1,41 @@
 OI PESSOAL
+##primeira tentativa householder (ta errado ainda)
+using LinearAlgebra
+A = [1 -1 4; 1 4 -2; 1 4 2; 1 -1 0]
+A = Float64.(A)
+V = []
+k = 1
+b = 0
+u = [] 
+Iden = Id(m,n)
+auxiliar = 0
+m,n = size(A) 
+while k < n
+    ##cria o vetor u igual ao vetor v (coluna de A)
+    for i in 1:m
+        for j in k:k
+            u = [u; A[i,j]]
+        end
+    end
+    
+    for i in 1:m
+        for j in 1:n
+            
+            if i < k
+                u[i,k] = 0   ##todos os elementos de u acima do elemento k serão iguais a zero             
+            end
+            for l in (k+1):m
+                auxiliar += A[l,k]^2 ##auxiliar que calcula os elementos dentro da raíz da norma
+            end
+            s = sqrt(auxiliar) ##norma
+            if s*A[k,k] >= 0 ##caso o produto de s e o elemento k sejam maiores que zero, ele muda o sinal de s
+                s = -s
+            end
+            u[k] = A[k,k] - s
+        end
+    end
+    print(u)
+    b = 2/ (u'*u)
+    Q = Iden - b*u*u'
+    k += 1
+end
